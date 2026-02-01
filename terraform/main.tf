@@ -1,34 +1,3 @@
-variable "project" {
-  type        = string
-  description = "GCP project ID"
-}
-
-variable "region" {
-  type        = string
-  description = "GCP region"
-}
-
-variable "zone" {
-  type        = string
-  description = "GCP zone"
-}
-
-# variable "bucket_name" {
-#   type        = string
-#   description = "Globally unique GCS bucket name"
-# }
-
-variable "location" {
-  type        = string
-  description = "GCS bucket location (e.g., ASIA or asia-south1)"
-  default     = "ASIA"
-}
-
-variable "target_service_account" {
-  type        = string
-  description = "The service account to impersonate for GCP operations"
-}
-
 terraform {
   required_providers {
     google = {
@@ -81,4 +50,9 @@ resource "google_storage_bucket" "learning_bucket" {
     condition { age = 1 }
     action { type = "AbortIncompleteMultipartUpload" }
   }
+}
+
+resource "google_bigquery_dataset" "demo_dataset" {
+  dataset_id = "${var.project_name}_${var.bq_dataset}"
+  location   = var.region
 }
